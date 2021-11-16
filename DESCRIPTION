@@ -1,0 +1,31 @@
+Package: rnar
+Type: Package
+Title: RNAR - A package for analyzing and visualizing RNA-seq datasets
+Version: 0.1.0
+Author: Who wrote it
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: RNAR is a package designed to clean, analyze and visualize transcriptome data for plant species, Arabidopsis thaliana. This package includes several self-written functions, as well as functions from some well-known packages of R Universe. 
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Import:
+    ggbiplot
+    ggrepel,
+    biomaRt,
+    biomartr,
+    devtools,
+    BiocManager,
+    GenomicFeatures,
+    TxDb.Athaliana.BioMart.plantsmart28,
+    ggbio,
+    readr,
+    magrittr,
+    tidyverse,
+    tidyr,
+    broom,
+    purrr,
+    ggplot2,
+    dplyr,
+Suggests: 
+    testthat

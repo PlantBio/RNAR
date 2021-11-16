@@ -1,0 +1,68 @@
+---
+title: "RNA-R package test notebook"
+output: html_notebook
+Description: This notebook demonstrates the capabilities of our package RNA-R. It is package designed to clean, analyze and visualize transcriptome data for any given organism. In this notebook we are using a data that came from a plant species called Arabidopsis thaliana. This package includes several self-written functions, as well as functions from some well-known packages of R Universe. 
+---
+
+
+```{r}
+#load necessary packages first
+# install_github("vqv/ggbiplot")
+library(ggbiplot)
+library(ggrepel)
+library(biomaRt)
+library(biomartr)
+library(devtools)
+# Load BiocManager and GenomicFeatures libraries to extract genomic positions of genes
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+# install.packages("BiocManager")
+# BiocManager::install("TxDb.Athaliana.BioMart.plantsmart28", version = "3.8")
+library(BiocManager)
+# install.packages("GenomicFeatures")
+library(GenomicFeatures)
+library(TxDb.Athaliana.BioMart.plantsmart28)
+# Load ggbio library to use plotGrandLinear function
+# install.packages("ggbio")
+library(ggbio)
+library(readr)
+library(magrittr)
+library(tidyverse)
+library(tidyr)
+library(broom)
+library(purrr)
+library(ggplot2)
+library(dplyr)
+
+```
+
+```{r}
+testdata <- read_csv("raw-data-template-AdvR_Project.csv")
+source("R/cleaning_data.R")
+source("R/findpvalue.R")
+source("R/pvalues.R")
+source("R/padjust.R")
+source("R/processing_and_cleaning.R")
+source("R/fold_change.R")
+source("R/significantly_regulated.R")
+source("R/heatmapfc.R")
+source("R/volcanoplot.R")
+source("R/pcaplot.R")
+source("R/ManhattanPlot.R")
+
+cleandat <- cleandat(testdata) #task 1 - cleaning the data
+
+processdat <- processdat(testdata) #task 2 subtask 1 & 2 - calculating p-values and corrected p-values(p.adjust = FDR) for the data
+
+FCdata <- FC_function(processdat) #task 2 subtask 3 - calculating the fold change between conditions for each row on a Log2 scale
+
+sig_reg(FCdata, 1) # prints significantly regulated (positively 'up' and negatively 'down') items as new data and places them in the global environment. Fold change cutoff is determined by the user,thus can be any numerical value.
+
+heatmapfc(FCdata) #produces a heatmap style plot to visualize data
+volcanoplot(FCdata) #produces a volcano (fountain) style plot to visualize data and annotates it based on filtering criteria
+pcaplot(FCdata) #Performs a Principal component analysis (PCA) and produces a plot to visualize the correlation of data
+manhattanplot(FCdata) #produces a Manhattan plot to visualize samples on different chromosomes of the given organism
+
+#bundle the package
+
+devtools::build()
+```
